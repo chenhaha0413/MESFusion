@@ -1,0 +1,167 @@
+x1 torch.Size([2, 3, 128, 128])
+A1 torch.Size([2, 48, 48])
+A1.dtype torch.float32
+x2 torch.Size([2, 3, 128, 128])
+B1 torch.Size([2, 48, 48])
+B1.dtype torch.float32
+model1(X1) torch.Size([2, 1, 768])
+model2(X2) torch.Size([2, 1, 384])
+fusion1 torch.Size([2, 1, 768])
+cross_attention(fusion) torch.Size([2, 1, 768])
+fusion2 torch.Size([2, 1, 384])
+cross_attention(fusion) torch.Size([2, 1, 384])
+A torch.Size([2, 1, 1152])
+A.reshape torch.Size([2, 24, 48])
+attn1 torch.Size([2, 48, 24])
+add_attn1 torch.Size([2, 48, 24])
+attn2 torch.Size([2, 48, 24])
+add_attn2 torch.Size([2, 48, 24])
+atten3A1B1 torch.Size([2, 48, 48])
+XXXXXX torch.Size([2, 48, 24])
+YYYYYY torch.Size([2, 48, 24])
+attn1.reshape torch.Size([2, 1, 1152])
+attn2.reshape torch.Size([2, 1, 1152])
+cross_attn1 torch.Size([2, 1, 1152])
+cross_attn2 torch.Size([2, 1, 1152])
+x_connect torch.Size([2, 1, 2304])
+x.transpose torch.Size([2, 2304, 1])
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+©À©¤Conv2d: 1-1                            [-1, 16, 128, 128]        448
+©À©¤MaxPool2d: 1-2                         [-1, 16, 64, 64]          --
+©À©¤Conv2d: 1-3                            [-1, 32, 64, 64]          4,640
+©À©¤MaxPool2d: 1-4                         [-1, 32, 32, 32]          --
+©À©¤Conv2d: 1-5                            [-1, 1, 32, 32]           289
+©À©¤MaxPool2d: 1-6                         [-1, 1, 16, 16]           --
+©À©¤Conv2d: 1-7                            [-1, 16, 128, 128]        (recursive)
+©À©¤MaxPool2d: 1-8                         [-1, 16, 64, 64]          --
+©À©¤Conv2d: 1-9                            [-1, 32, 64, 64]          (recursive)
+©À©¤MaxPool2d: 1-10                        [-1, 32, 32, 32]          --
+©À©¤Conv2d: 1-11                           [-1, 1, 32, 32]           (recursive)
+©À©¤MaxPool2d: 1-12                        [-1, 1, 16, 16]           --
+©À©¤SwinTransformer_2: 1-13                [-1, 1, 768]              --
+|    ©¸©¤PatchEmbed: 2-1                   [-1, 1024, 96]            --
+|    |    ©¸©¤Conv2d: 3-1                  [-1, 96, 32, 32]          4,704
+|    |    ©¸©¤LayerNorm: 3-2               [-1, 1024, 96]            192
+|    ©¸©¤Dropout: 2-2                      [-1, 1024, 96]            --
+|    ©¸©¤ModuleList: 2                     []                        --
+|    |    ©¸©¤BasicLayer: 3-3              [-1, 256, 192]            299,190
+|    |    ©¸©¤BasicLayer: 3-4              [-1, 64, 384]             1,188,204
+|    |    ©¸©¤BasicLayer: 3-5              [-1, 16, 768]             11,841,672
+|    |    ©¸©¤BasicLayer: 3-6              [-1, 16, 768]             14,183,856
+|    ©¸©¤LayerNorm: 2-3                    [-1, 16, 768]             1,536
+|    ©¸©¤AdaptiveAvgPool1d: 2-4            [-1, 768, 1]              --
+©À©¤MobileViT: 1-14                        [-1, 1, 384]              --
+|    ©¸©¤ConvLayer: 2-5                    [-1, 16, 64, 64]          --
+|    |    ©¸©¤Sequential: 3-7              [-1, 16, 64, 64]          464
+|    ©¸©¤Sequential: 2-6                   [-1, 32, 64, 64]          --
+|    |    ©¸©¤InvertedResidual: 3-8        [-1, 32, 64, 64]          3,968
+|    ©¸©¤Sequential: 2-7                   [-1, 48, 32, 32]          --
+|    |    ©¸©¤InvertedResidual: 3-9        [-1, 48, 32, 32]          12,000
+|    |    ©¸©¤InvertedResidual: 3-10       [-1, 48, 32, 32]          21,024
+|    |    ©¸©¤InvertedResidual: 3-11       [-1, 48, 32, 32]          21,024
+|    ©¸©¤Sequential: 2-8                   [-1, 64, 16, 16]          --
+|    |    ©¸©¤InvertedResidual: 3-12       [-1, 64, 16, 16]          24,128
+|    |    ©¸©¤MobileViTBlock: 3-13         [-1, 64, 16, 16]          273,024
+|    ©¸©¤Sequential: 2-9                   [-1, 80, 8, 8]            --
+|    |    ©¸©¤InvertedResidual: 3-14       [-1, 80, 8, 8]            40,352
+|    |    ©¸©¤MobileViTBlock: 3-15         [-1, 80, 8, 8]            658,800
+|    ©¸©¤Sequential: 2-10                  [-1, 96, 4, 4]            --
+|    |    ©¸©¤InvertedResidual: 3-16       [-1, 96, 4, 4]            60,672
+|    |    ©¸©¤MobileViTBlock: 3-17         [-1, 96, 4, 4]            779,760
+|    ©¸©¤ConvLayer: 2-11                   [-1, 384, 4, 4]           --
+|    |    ©¸©¤Sequential: 3-18             [-1, 384, 4, 4]           37,632
+|    ©¸©¤AdaptiveAvgPool1d: 2-12           [-1, 384, 1]              --
+©À©¤Sequential: 1-15                       [-1, 1, 384]              --
+|    ©¸©¤LayerNorm: 2-13                   [-1, 1, 768]              1,536
+|    ©¸©¤GELU: 2-14                        [-1, 1, 768]              --
+|    ©¸©¤Linear: 2-15                      [-1, 1, 384]              295,296
+©À©¤Sequential: 1-16                       [-1, 1, 768]              --
+|    ©¸©¤LayerNorm: 2-16                   [-1, 1, 384]              768
+|    ©¸©¤GELU: 2-17                        [-1, 1, 384]              --
+|    ©¸©¤Linear: 2-18                      [-1, 1, 768]              295,680
+©À©¤CrossAttentionBlock1: 1-17             [-1, 1, 768]              --
+|    ©¸©¤LayerNorm: 2-19                   [-1, 1, 768]              1,536
+|    ©¸©¤CrossAttention1: 2-20             [-1, 1, 768]              --
+|    |    ©¸©¤Linear: 3-19                 [-1, 1, 768]              590,592
+|    |    ©¸©¤Linear: 3-20                 [-1, 1, 768]              590,592
+|    |    ©¸©¤Linear: 3-21                 [-1, 1, 768]              590,592
+|    |    ©¸©¤Dropout: 3-22                [-1, 8, 1, 1]             --
+|    |    ©¸©¤Linear: 3-23                 [-1, 1, 768]              590,592
+|    |    ©¸©¤Dropout: 3-24                [-1, 1, 768]              --
+|    ©¸©¤Identity: 2-21                    [-1, 1, 768]              --
+©À©¤CrossAttentionBlock2: 1-18             [-1, 1, 384]              --
+|    ©¸©¤LayerNorm: 2-22                   [-1, 1, 384]              768
+|    ©¸©¤CrossAttention2: 2-23             [-1, 1, 384]              --
+|    |    ©¸©¤Linear: 3-25                 [-1, 1, 384]              147,840
+|    |    ©¸©¤Linear: 3-26                 [-1, 1, 384]              147,840
+|    |    ©¸©¤Linear: 3-27                 [-1, 1, 384]              147,840
+|    |    ©¸©¤Dropout: 3-28                [-1, 8, 1, 1]             --
+|    |    ©¸©¤Linear: 3-29                 [-1, 1, 384]              147,840
+|    |    ©¸©¤Dropout: 3-30                [-1, 1, 384]              --
+|    ©¸©¤Identity: 2-24                    [-1, 1, 384]              --
+©À©¤CrossAttentionBlock1: 1-19             [-1, 1, 768]              (recursive)
+|    ©¸©¤LayerNorm: 2-25                   [-1, 1, 768]              (recursive)
+|    ©¸©¤CrossAttention1: 2-26             [-1, 1, 768]              (recursive)
+|    |    ©¸©¤Linear: 3-31                 [-1, 1, 768]              (recursive)
+|    |    ©¸©¤Linear: 3-32                 [-1, 1, 768]              (recursive)
+|    |    ©¸©¤Linear: 3-33                 [-1, 1, 768]              (recursive)
+|    |    ©¸©¤Dropout: 3-34                [-1, 8, 1, 1]             --
+|    |    ©¸©¤Linear: 3-35                 [-1, 1, 768]              (recursive)
+|    |    ©¸©¤Dropout: 3-36                [-1, 1, 768]              --
+|    ©¸©¤Identity: 2-27                    [-1, 1, 768]              --
+©À©¤CrossAttentionBlock2: 1-20             [-1, 1, 384]              (recursive)
+|    ©¸©¤LayerNorm: 2-28                   [-1, 1, 384]              (recursive)
+|    ©¸©¤CrossAttention2: 2-29             [-1, 1, 384]              (recursive)
+|    |    ©¸©¤Linear: 3-37                 [-1, 1, 384]              (recursive)
+|    |    ©¸©¤Linear: 3-38                 [-1, 1, 384]              (recursive)
+|    |    ©¸©¤Linear: 3-39                 [-1, 1, 384]              (recursive)
+|    |    ©¸©¤Dropout: 3-40                [-1, 8, 1, 1]             --
+|    |    ©¸©¤Linear: 3-41                 [-1, 1, 384]              (recursive)
+|    |    ©¸©¤Dropout: 3-42                [-1, 1, 384]              --
+|    ©¸©¤Identity: 2-30                    [-1, 1, 384]              --
+©À©¤CrossAttentionBlock: 1-21              [-1, 1, 1152]             --
+|    ©¸©¤LayerNorm: 2-31                   [-1, 1, 1152]             2,304
+|    ©¸©¤CrossAttention: 2-32              [-1, 1, 1152]             --
+|    |    ©¸©¤Linear: 3-43                 [-1, 1, 1152]             1,328,256
+|    |    ©¸©¤Linear: 3-44                 [-1, 1, 1152]             1,328,256
+|    |    ©¸©¤Linear: 3-45                 [-1, 1, 1152]             1,328,256
+|    |    ©¸©¤Dropout: 3-46                [-1, 8, 1, 1]             --
+|    |    ©¸©¤Linear: 3-47                 [-1, 1, 1152]             1,328,256
+|    |    ©¸©¤Dropout: 3-48                [-1, 1, 1152]             --
+|    ©¸©¤Identity: 2-33                    [-1, 1, 1152]             --
+©À©¤CrossAttentionBlock: 1-22              [-1, 1, 1152]             (recursive)
+|    ©¸©¤LayerNorm: 2-34                   [-1, 1, 1152]             (recursive)
+|    ©¸©¤CrossAttention: 2-35              [-1, 1, 1152]             (recursive)
+|    |    ©¸©¤Linear: 3-49                 [-1, 1, 1152]             (recursive)
+|    |    ©¸©¤Linear: 3-50                 [-1, 1, 1152]             (recursive)
+|    |    ©¸©¤Linear: 3-51                 [-1, 1, 1152]             (recursive)
+|    |    ©¸©¤Dropout: 3-52                [-1, 8, 1, 1]             --
+|    |    ©¸©¤Linear: 3-53                 [-1, 1, 1152]             (recursive)
+|    |    ©¸©¤Dropout: 3-54                [-1, 1, 1152]             --
+|    ©¸©¤Identity: 2-36                    [-1, 1, 1152]             --
+©À©¤SwinTransformer: 1-23                  [-1, 1]                   --
+|    ©¸©¤PatchEmbed: 2-37                  [-1, 144, 96]             --
+|    |    ©¸©¤Conv2d: 3-55                 [-1, 96, 12, 12]          1,632
+|    |    ©¸©¤LayerNorm: 3-56              [-1, 144, 96]             192
+|    ©¸©¤Dropout: 2-38                     [-1, 144, 96]             --
+|    ©¸©¤ModuleList: 2                     []                        --
+|    |    ©¸©¤BasicLayer: 3-57             [-1, 36, 192]             299,190
+|    |    ©¸©¤BasicLayer: 3-58             [-1, 9, 384]              1,188,204
+|    |    ©¸©¤BasicLayer: 3-59             [-1, 4, 768]              11,841,672
+|    |    ©¸©¤BasicLayer: 3-60             [-1, 4, 768]              14,183,856
+|    ©¸©¤LayerNorm: 2-39                   [-1, 4, 768]              1,536
+|    ©¸©¤AdaptiveAvgPool1d: 2-40           [-1, 768, 1]              --
+|    ©¸©¤Linear: 2-41                      [-1, 1]                   769
+==========================================================================================
+Total params: 65,839,270
+Trainable params: 65,839,270
+Non-trainable params: 0
+Total mult-adds (M): 229.93
+==========================================================================================
+Input size (MB): 0.25
+Forward/backward pass size (MB): 6.04
+Params size (MB): 251.16
+Estimated Total Size (MB): 257.44
+==========================================================================================
